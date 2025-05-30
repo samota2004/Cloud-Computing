@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBERPUNK 3D EXPERIENCE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #00ff9f, #00d4ff);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            animation: cursorPulse 2s infinite;
+        }
+
+        @keyframes cursorPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+
+        /* Cyberpunk Grid Background */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(cyan 1px, transparent 1px),
+                linear-gradient(90deg, cyan 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+            animation: gridMove 20s linear infinite;
+            z-index: -2;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Holographic Background */
+        .holo-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 159, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 0, 150, 0.2) 0%, transparent 50%);
+            animation: holoShift 10s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes holoShift {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(180deg); }
+        }
+
+        /* Floating Holograms */
+        .holograms {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hologram {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #00ff9f, #00d4ff);
+            opacity: 0.7;
+            animation: holoFloat 15s infinite ease-in-out;
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+        }
+
+        .hologram:nth-child(1) {
+            top: 10%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .hologram:nth-child(2) {
+            top: 70%;
+            left: 75%;
+            animation-delay: -5s;
+            transform: rotate(45deg);
+        }
+
+        .hologram:nth-child(3) {
+            top: 30%;
+            left: 80%;
+            animation-delay: -10s;
+            clip-path: circle(50%);
+        }
+
+        .hologram:nth-child(4) {
+            top: 60%;
+            left: 10%;
+            animation-delay: -7s;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        @keyframes holoFloat {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg) scale(1);
+                filter: hue-rotate(0deg);
+            }
+            25% { 
+                transform: translateY(-30px) rotate(90deg) scale(1.2);
+                filter: hue-rotate(90deg);
+            }
+            50% { 
+                transform: translateY(-60px) rotate(180deg) scale(0.8);
+                filter: hue-rotate(180deg);
+            }
+            75% { 
+                transform: translateY(-30px) rotate(270deg) scale(1.1);
+                filter: hue-rotate(270deg);
+            }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(0, 255, 159, 0.3);
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00ff9f, #00d4ff, #ff0080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 159, 0.5);
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { filter: brightness(1) drop-shadow(0 0 10px #00ff9f); }
+            to { filter: brightness(1.2) drop-shadow(0 0 20px #00d4ff); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #00ff9f, #00d4ff);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-menu a:hover::before {
+            opacity: 0.2;
+        }
+
+        .nav-menu a:hover {
+            color: #00ff9f;
+            transform: translateY(-3px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #00ff9f, #00d4ff, #ff0080, #00ff9f);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textFlow 4s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(0, 255, 159, 0.5);
+        }
+
+        @keyframes textFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 50px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .cyber-btn {
+            padding: 15px 40px;
+            background: transparent;
+            border: 2px solid #00ff9f;
+            color: #00ff9f;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 20px 100%);
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 159, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        .cyber-btn:hover {
+            color: #000;
+            background: #00ff9f;
+            box-shadow: 0 0 30px rgba(0, 255, 159, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .cyber-btn.secondary {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        .cyber-btn.secondary:hover {
+            background: #00d4ff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        /* 3D Rotating Elements */
+        .rotating-element {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(0, 255, 159, 0.3);
+            animation: rotate3D 20s linear infinite;
+        }
+
+        .rotating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation-delay: 0s;
+        }
+
+        .rotating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            border-radius: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes rotate3D {
+            0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
+            33% { transform: rotateX(120deg) rotateY(120deg) rotateZ(120deg); }
+            66% { transform: rotateX(240deg) rotateY(240deg) rotateZ(240deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        /* Interactive Cards */
+        .cards-section {
+            padding: 100px 50px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .cyber-card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(0, 255, 159, 0.3);
+            border-radius: 10px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 255, 159, 0.1), rgba(0, 212, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cyber-card:hover::before {
+            opacity: 1;
+        }
+
+        .cyber-card:hover {
+            transform: translateY(-20px) rotateX(10deg) rotateY(10deg);
+            border-color: #00ff9f;
+            box-shadow: 0 30px 60px rgba(0, 255, 159, 0.2);
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ff9f, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cyber-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #00ff9f;
+            font-weight: 600;
+        }
+
+        .cyber-card p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            header { padding: 15px 20px; }
+            .nav-menu { display: none; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .cards-section { padding: 50px 20px; }
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeOut 2s ease-out 3s forwards;
+        }
+
+        .cyber-loader {
+            width: 100px;
+            height: 100px;
+            border: 3px solid rgba(0, 255, 159, 0.3);
+            border-top: 3px solid #00ff9f;
+            border-radius: 50%;
+            animation: cyberSpin 2s linear infinite;
+        }
+
+        @keyframes cyberSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        /* Particle System */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00ff9f;
+            border-radius: 50%;
+            animation: particleFloat 10s infinite linear;
+            box-shadow: 0 0 10px #00ff9f;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) scale(0); }
+            10% { transform: translateY(90vh) scale(1); }
+            90% { transform: translateY(-10vh) scale(1); }
+            100% { transform: translateY(-20vh) scale(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="cyber-loader"></div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Background Effects -->
+    <div class="cyber-grid"></div>
+    <div class="holo-bg"></div>
+    
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Floating Holograms -->
+    <div class="holograms">
+        <div class="hologram"></div>
+        <div class="hologram"></div>
+        <div class="hologram"></div>
+        <div class="hologram"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo glitch">CYBERVERSE</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">HOME</a></li>
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#services">SERVICES</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="rotating-element"></div>
+        <div class="rotating-element"></div>
+        
+        <div class="hero-content">
+            <h1>WELCOME TO THE FUTURE</h1>
+            <p>Step into a world where technology meets imagination. Experience the most advanced 3D interactive web environment ever created.</p>
+            <div class="hero-buttons">
+                <a href="#services" class="cyber-btn">ENTER MATRIX</a>
+                <a href="#about" class="cyber-btn secondary">LEARN MORE</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="cards-section" id="services">
+        <div class="cards-container">
+            <div class="cyber-card">
+                <div class="card-icon">🚀</div>
+                <h3>QUANTUM COMPUTING</h3>
+                <p>Harness the power of quantum mechanics to solve complex problems at unprecedented speeds.</p>
+            </div>
+            <div class="cyber-card">
+                <div class="card-icon">🌐</div>
+                <h3>NEURAL NETWORKS</h3>
+                <p>Advanced AI systems that learn and adapt, creating intelligent solutions for tomorrow's challenges.</p>
+            </div>
+            <div class="cyber-card">
+                <div class="card-icon">⚡</div>
+                <h3>ENERGY FUSION</h3>
+                <p>Revolutionary clean energy technology that powers the future with unlimited potential.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Particle System
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            
+            const colors = ['#00ff9f', '#00d4ff', '#ff0080'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.boxShadow = `0 0 10px ${particle.style.background}`;
+            
+            document.getElementById('particles').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 20000);
+        }
+
+        // Create particles continuously
+        setInterval(createParticle, 300);
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Interactive Cards
+        const cards = document.querySelectorAll('.cyber-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.querySelector('.card-icon').style.animation = 'none';
+                card.querySelector('.card-icon').style.transform = 'rotateY(360deg)';
+                card.querySelector('.card-icon').style.transition = 'transform 0.5s ease';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.querySelector('.card-icon').style.transform = 'rotateY(0deg)';
+            });
+        });
+
+        // Random Glitch Effect
+        setInterval(() => {
+            const glitchElements = document.querySelectorAll('.glitch');
+            glitchElements.forEach(el => {
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = 'glitch 0.3s';
+                }, 10);
+            });
+        }, 8000);
+
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const holograms = document.querySelectorAll('.hologram');
+            
+            holograms.forEach((hologram, index) => {
+                const speed = (index + 1) * 0.3;
+                hologram.style.transform += ` translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.loading-screen').style.display = 'none';
+            }, 4000);
+        });
+
+        // Audio Effect (Optional)
+        document.addEventListener('click', () => {
+            // Add cyber sound effects here if needed
+        });
+    </script>
+</body>
+</html>
